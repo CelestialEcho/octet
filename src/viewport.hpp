@@ -1,9 +1,10 @@
 #pragma once
-#define LOGGING_ENABLED
 
 #include <SDL3/SDL.h>
 #include <glad/glad.h>
 #include <logc/log.h>
+
+#include "input.hpp"
 
 namespace oc {
 
@@ -47,22 +48,21 @@ public:
         return true;
     }
 
-    void poll() {
+    void poll(Input& input) {
         while (running) {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE) {
+                if (event.type == SDL_EVENT_QUIT) {
                     running = false;
                 }
-                else if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED) {
-                    SDL_GetWindowSizeInPixels(window, &width, &height);
-                    glViewport(0, 0, width, height);
-                }
+                input.handle(event);
             }
+            
     
-            glClearColor(0.1f, 0.1f, 0.12f, 1.0f);
+            glClearColor(0.1f, 0.1f, 0.1f, 1.f);
             glClear(GL_COLOR_BUFFER_BIT);
             SDL_GL_SwapWindow(window);
+            input.clear();
         }
     }
 
