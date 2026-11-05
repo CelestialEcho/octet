@@ -11,7 +11,6 @@ class Input {
     std::array<bool, SDL_SCANCODE_COUNT> pressed;
     std::array<bool, SDL_SCANCODE_COUNT> released;
 
-
     struct Mouse {
         glm::vec2 pos;
         glm::vec2 delta;
@@ -45,9 +44,9 @@ public:
             if (event.button.button == SDL_BUTTON_RIGHT) { mouse.isRightDown = true; }
             
         } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
-            if (event.button.button == SDL_BUTTON_LEFT) { mouse.isLeftDown = true; }
-            if (event.button.button == SDL_BUTTON_MIDDLE) { mouse.isMiddleDown = true; }
-            if (event.button.button == SDL_BUTTON_RIGHT) { mouse.isRightDown = true; }
+            if (event.button.button == SDL_BUTTON_LEFT) { mouse.isLeftDown = false; }
+            if (event.button.button == SDL_BUTTON_MIDDLE) { mouse.isMiddleDown = false; }
+            if (event.button.button == SDL_BUTTON_RIGHT) { mouse.isRightDown = false; }
         }
         
         if (event.type == SDL_EVENT_WINDOW_FOCUS_LOST) {

@@ -57,11 +57,14 @@ public:
                 }
                 input.handle(event);
             }
-            
+
     
             glClearColor(0.1f, 0.1f, 0.1f, 1.f);
             glClear(GL_COLOR_BUFFER_BIT);
             SDL_GL_SwapWindow(window);
+
+
+            
             input.clear();
         }
     }
