@@ -1,6 +1,6 @@
 CXX = clang++
 # -O2 -Wall -Wextra -Wpedantic
-CXXFLAGS = -std=c++23 
+CXXFLAGS = -std=c++23 -D_CRT_SECURE_NO_WARNINGS -Wno-deprecated
 INCLUDES = -Iinclude
 LIBRARIES = -Llib -lSDL3 -lopengl32
 TARGET = bin/o.exe
@@ -10,7 +10,7 @@ SOURCE = src/main.cpp
 
 
 # dependencies' source files
-SOURCE += include/glad/glad.c include/logc/log.c
+SOURCE += include/glad/glad.c include/logc/log.c include/nanovg/nanovg.c
 
 all:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBRARIES) $(SOURCE) -o $(TARGET)
