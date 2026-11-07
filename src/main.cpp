@@ -2,8 +2,8 @@
 #include "input.hpp"
 
 int main() {
-    oc::Viewport viewport(1270, 720);
     oc::Input input;
+    oc::Viewport viewport(1270, 720);
     
     viewport.init();
     viewport.poll(input);
