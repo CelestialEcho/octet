@@ -9,6 +9,7 @@
 #include <nanovg/nanovg_gl.h>
 
 #include "input.hpp"
+#include "gui.hpp"
 
 namespace oc {
 
@@ -19,9 +20,10 @@ class Viewport {
     SDL_Window* window = nullptr;
     SDL_GLContext ctx = nullptr;
     NVGcontext* vg = nullptr;
+    Gui gui;
 
 public:
-    Viewport(int width, int height) : width(width), height(height) {}
+    Viewport(int width, int height, Gui& gui) : width(width), height(height), gui(gui) {}
 
     int getHeight() const { return height; }
     int getWidth() const { return width; }
@@ -57,16 +59,17 @@ public:
             return false;
         }
 
-        // log_trace(
-        //     "GL driver version: %s | GLSL version: %s",
-        //     glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION)
-        // );
+        log_trace("GL driver version: %s | GLSL version: %s", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
         SDL_GetWindowSizeInPixels(window, &width, &height);
 
         vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
         if (!vg) {
             log_fatal("Failed to create nanovg context");
             quit();
+            return false;
+        }
+
+        if (!gui.init(window, ctx)) {
             return false;
         }
 
@@ -77,6 +80,7 @@ public:
         while (running) {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
+                gui.handle(event);
                 if (event.type == SDL_EVENT_QUIT) {
                     running = false;
                 } else if (event.type == SDL_EVENT_WINDOW_RESIZED) {
@@ -97,6 +101,8 @@ public:
                 nvgFill(vg);
             */
             nvgEndFrame(vg);
+            
+            gui.draw(width, height);
 
             SDL_GL_SwapWindow(window);
             input.clear();
