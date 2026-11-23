@@ -22,3 +22,4 @@ clean:
 	rm -f $(TARGET)
 
 .PHONY: all run clean
+.SILENT: all run clean

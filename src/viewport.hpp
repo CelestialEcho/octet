@@ -102,7 +102,7 @@ public:
             */
             nvgEndFrame(vg);
             
-            gui.draw(width, height);
+            gui.draw(width, height, input);
 
             SDL_GL_SwapWindow(window);
             input.clear();
