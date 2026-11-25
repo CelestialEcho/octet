@@ -7,7 +7,6 @@
 
 #include <logc/log.h>
 
-#include "input.hpp"
 #include "imgui_ex.hpp"
 
 namespace oc {
@@ -74,7 +73,7 @@ public:
             && ImGui_ImplOpenGL3_Init(nullptr);
     }
 
-    void draw(float /*windowHeight*/, float windowLength, Input& /*input*/) noexcept {
+    void draw(float /*windowHeight*/, float windowLength) noexcept {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL3_NewFrame();
         ImGui::NewFrame();

@@ -1,15 +1,10 @@
-#include "viewport.hpp"
-#include "input.hpp"
-#include "gui.hpp"
+#include "app.hpp"
 
 int main() {
-    oc::Gui gui;
-    oc::Input input;
-    oc::Viewport viewport(1270, 720, gui);
-    
-    viewport.init();
-    viewport.poll(input);
-    viewport.quit();
+
+    oc::App* app = new oc::App(1280, 720, "Octet preview");
+    app->run();
+    delete(app);
     
     return 0;
 }

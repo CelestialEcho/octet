@@ -1,11 +1,10 @@
 #pragma once
 
-#include "SDL3/SDL_events.h"
 #include <SDL3/SDL.h>
 #include <glad/glad.h>
 #include <logc/log.h>
-#include <nanovg/nanovg.h>
 #define NANOVG_GL3_IMPLEMENTATION
+#include <nanovg/nanovg.h>
 #include <nanovg/nanovg_gl.h>
 
 #include "input.hpp"
@@ -20,15 +19,16 @@ class Viewport {
     SDL_Window* window = nullptr;
     SDL_GLContext ctx = nullptr;
     NVGcontext* vg = nullptr;
-    Gui gui;
 
 public:
-    Viewport(int width, int height, Gui& gui) : width(width), height(height), gui(gui) {}
+    Viewport(int width, int height) : width(width), height(height) {}
 
+    SDL_Window* getWindow() noexcept { return window; }
+    SDL_GLContext getGlContext() noexcept { return ctx; }
     int getHeight() const { return height; }
     int getWidth() const { return width; }
 
-    bool init() {
+    [[nodiscard]] bool init() {
         if (!SDL_Init(SDL_INIT_VIDEO)) {
             log_fatal("SDL_Init: %s", SDL_GetError());
             return false;
@@ -69,24 +69,20 @@ public:
             return false;
         }
 
-        if (!gui.init(window, ctx)) {
-            return false;
-        }
-
         return true;
     }
 
-    void poll(Input& input) {
+    void run(Gui* gui, Input* input) {
         while (running) {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
-                gui.handle(event);
                 if (event.type == SDL_EVENT_QUIT) {
                     running = false;
                 } else if (event.type == SDL_EVENT_WINDOW_RESIZED) {
                     SDL_GetWindowSizeInPixels(window, &width, &height);
                 }
-                input.handle(event);
+                gui->handle(event);
+                input->handle(event);
             }
 
             glViewport(0, 0, width, height);
@@ -102,10 +98,10 @@ public:
             */
             nvgEndFrame(vg);
             
-            gui.draw(width, height, input);
+            gui->draw(width, height);
 
             SDL_GL_SwapWindow(window);
-            input.clear();
+            input->clear();
         }
     }
 

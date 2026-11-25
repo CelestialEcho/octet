@@ -7,9 +7,9 @@
 namespace oc {
 
 class Input {
-    std::array<bool, SDL_SCANCODE_COUNT> held;
-    std::array<bool, SDL_SCANCODE_COUNT> pressed;
-    std::array<bool, SDL_SCANCODE_COUNT> released;
+    std::array<bool, SDL_SCANCODE_COUNT> held = {};
+    std::array<bool, SDL_SCANCODE_COUNT> pressed = {};
+    std::array<bool, SDL_SCANCODE_COUNT> released= {};
 
     struct Mouse {
         glm::vec2 pos;
